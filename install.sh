@@ -4,9 +4,9 @@
 # 🔧 These variable can be changed to customize a forked laptop repository
 #
 RELEASE="main"
-REPOSITORY_NAME=${REPOSITORY_NAME:-"jpolo/laptop"}
+REPOSITORY_NAME=${REPOSITORY_NAME:-"Inthememory/laptop"}
 # ⬇ Uncomment this if you want to force default install profile
-# export LAPTOP_PROFILE=${LAPTOP_PROFILE:-"default"}
+export LAPTOP_PROFILE=${LAPTOP_PROFILE:-"memory"}
 export LAPTOP_GIT_REMOTE="https://github.com/$REPOSITORY_NAME.git"
 
 #==============================================================================
