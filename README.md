@@ -1,4 +1,4 @@
-# 💻 Laptop initialization script
+# 💻 Memory Laptop initialization script
 
 The main goal of this project is to help developers to focus on delivering value instead of struggling with the workstation configuration.
 
@@ -18,13 +18,14 @@ Its core values are :
 Available profiles :
 
 - [default](./profile/default/README.md)
+- [memory](./profile/memory/README.md)
 
 1. Open a terminal ( [How to](https://www.wikihow.com/Open-a-Terminal-Window-in-Mac) )
 
 2. Run the installation command :
 
 ```shell
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/jpolo/laptop/main/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Inthememory/laptop/main/install.sh)"
 ```
 
 ## ✨ Features
@@ -147,9 +148,5 @@ Contributions are welcome especially when :
 - adding documentation to the laptop shell library `./src/functions`
 - adding new capabilities / support for the tool
 - reporting / fixing security issues
-
-## 🩷 Funding
-
-If you like this repository and it made you win a lot of time / money (by not hiring a devops for example :) ), you may consider a small donation to help me maintaining this repository [Link to my profile](https://github.com/jpolo#-donate).
 
 [Homebrew]: http://brew.sh/

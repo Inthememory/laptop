@@ -4,7 +4,7 @@
 # 🔧 These variable can be changed to customize a forked laptop repository
 #
 RELEASE="main"
-REPOSITORY_NAME=${REPOSITORY_NAME:-"jpolo/laptop"}
+REPOSITORY_NAME=${REPOSITORY_NAME:-"Inthememory/laptop"}
 export LAPTOP_GIT_REMOTE="https://github.com/$REPOSITORY_NAME.git"
 
 #==============================================================================
