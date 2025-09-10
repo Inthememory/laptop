@@ -6,7 +6,7 @@
 RELEASE="main"
 REPOSITORY_NAME=${REPOSITORY_NAME:-"Inthememory/laptop"}
 # ⬇ Uncomment this if you want to force default install profile
-# export LAPTOP_PROFILE="default"
+# export LAPTOP_PROFILE=${LAPTOP_PROFILE:-"default"}
 export LAPTOP_GIT_REMOTE="https://github.com/$REPOSITORY_NAME.git"
 
 #==============================================================================
