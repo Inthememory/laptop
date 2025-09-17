@@ -72,6 +72,7 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
   # laptop_ensure_package "pack:proton"
   laptop_ensure_package "pack:microsoft"
 
+  laptop_ensure_package "cursor"
   laptop_ensure_package "orbstack"
 
   # Install programs
