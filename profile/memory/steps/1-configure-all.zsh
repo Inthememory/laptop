@@ -75,6 +75,8 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
   laptop_ensure_package "cursor"
   laptop_ensure_package "orbstack"
 
+  laptop_ensure_package "fga"
+
   # Install programs
   # laptop_ensure_package "android-studio"
   # laptop_ensure_package "android-sdk"
