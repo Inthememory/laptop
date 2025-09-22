@@ -99,7 +99,6 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
   laptop_ensure_vscode_extension "EditorConfig.EditorConfig"
   laptop_ensure_vscode_extension "eamodio.gitlens"
   laptop_ensure_vscode_extension "GitHub.vscode-pull-request-github"
-  laptop_ensure_vscode_extension "GitLab.gitlab-workflow"
   laptop_ensure_vscode_extension "ms-vsliveshare.vsliveshare"
   laptop_ensure_vscode_extension "joshbolduc.commitlint"
   laptop_ensure_vscode_extension "streetsidesoftware.code-spell-checker"
@@ -110,7 +109,7 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
 
   # Configure VSCode
   laptop_ensure_npm_package "jsonc-cli"
-  laptop_ensure_vscode_setting '["workbench.fontAliasing"]' 'auto'
+  laptop_ensure_vscode_setting '["workbench.fontAliasing"]' '"auto"'
   laptop_ensure_vscode_setting '["editor.bracketPairColorization.enabled"]' 'true'
   laptop_ensure_vscode_setting '["editor.fontFamily"]' "\"'Monaspace Neon', Menlo, Monaco, Courier New, monospace\""
   laptop_ensure_vscode_setting '["editor.fontLigatures"]' "\"'calt', 'liga', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09'\""
@@ -126,7 +125,7 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
   # Fix ruby lsp with asdf
   laptop_ensure_vscode_setting '["rubyLsp.rubyVersionManager","identifier"]' '"asdf"'
   # Disable gitlens pro features annoying messages
-  laptop_ensure_vscode_setting '["gitlens.plusFeatures.enabled]' 'false'
+  laptop_ensure_vscode_setting '["gitlens.plusFeatures.enabled"]' 'false'
 fi
 
 laptop_ssh_key_test "git@github.com" \
