@@ -125,8 +125,3 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
   # Fix ruby lsp with asdf
   laptop_vscode_ensure_setting '["rubyLsp.rubyVersionManager","identifier"]' '"asdf"'
 fi
-
-laptop_ssh_test_key "git@github.com" \
-  && laptop_info "🔑✅ SSH valid on github.com." \
-  || laptop_warn "🔑❌ SSH invalid on github.com. Please register on https://github.com/settings/keys"
-
