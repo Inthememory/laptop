@@ -30,9 +30,9 @@ COLUMNS=100
 if [ "$COLUMNS" = "0" ]; then
   COLUMNS=80
 fi
-COL=$((COLUMNS - 8))
+LAPTOP_STEP_STATUS_COLUMN=$((COLUMNS - 8))
 # shellcheck disable=SC2034
-SET_COL="\\033[${COL}G"
+SET_COL="\\033[${LAPTOP_STEP_STATUS_COLUMN}G"
 # shellcheck disable=SC2034
 NORMAL="\\033[0;39m"
 # shellcheck disable=SC2034
@@ -45,16 +45,14 @@ COLOR_ERROR='\033[31m'
 COLOR_WARNING='\033[1;33m'
 # shellcheck disable=SC2034
 COLOR_INFO='\033[32m'
+# shellcheck disable=SC2034
+DIM="\\033[2m"
 
 LAPTOP_SHELL="${LAPTOP_SHELL:-"zsh"}"
 
 if [ -z "$LAPTOP_DEVCONTAINER" ]; then
   [[ "$(whoami)" = "vscode" ]] && LAPTOP_DEVCONTAINER="true"
 fi
-
-is_arm() {
-  test arm64 = "$(uname -m)"
-}
 
 quote() {
   local quoted=${1//\'/\'\\\'\'}
