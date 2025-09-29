@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 laptop_command__configure_run() {
-  # Load profile (with overrides)
-  laptop_profile_load
 
   # Bootstrap
   laptop_bootstrap
@@ -15,7 +13,7 @@ laptop_command__configure_run() {
 }
 
 laptop_command__configure() {
-  laptop_logo
+  laptop_handler_call "logo"
   laptop_self_check_version
 
   # Select profile
