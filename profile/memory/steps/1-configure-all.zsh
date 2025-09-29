@@ -110,6 +110,14 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
     laptop_vscode_ensure_extension "redhat.vscode-yaml"
     laptop_vscode_ensure_extension "aaron-bond.better-comments"
 
+    # Ruby extensions
+    laptop_vscode_ensure_extension "shopify.ruby-lsp"
+    laptop_vscode_ensure_extension "rubocop.vscode-rubocop"
+    laptop_vscode_ensure_extension "sorbet.sorbet-vscode-extension"
+
+    # Javascript / Typescript extensions
+    laptop_vscode_ensure_extension "dbaeumer.vscode-eslint"
+
     # Configure VSCode
     laptop_npm_ensure_package "jsonc-cli"
     laptop_vscode_ensure_setting '["editor.bracketPairColorization.enabled"]' 'true'
