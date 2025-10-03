@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
 laptop_bootstrap_debian() {
-  laptop_shell_ensure "$LAPTOP_SHELL"
   laptop_apt_ensure_updated
+  laptop_apt_ensure_package "zsh"
+  laptop_shell_ensure "$LAPTOP_SHELL"
   laptop_package_ensure "pack:apt-core"
+  laptop_package_ensure "brew"
+  # set laptop package manager
+  export LAPTOP_PACKAGE_MANAGER=brew
 }
 
 laptop_bootstrap_macos() {
