@@ -44,6 +44,8 @@ fi
 # Install standard utils
 laptop_package_ensure "pack:core"
 laptop_package_ensure "pack:cli-tools"
+laptop_package_ensure "pack:kube-utils"
+laptop_package_ensure "pack:cloud-utils"
 # Additional utils
 laptop_package_ensure "fga"
 
@@ -86,15 +88,6 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
   # Install programs
   # laptop_package_ensure "android-studio"
   # laptop_package_ensure "android-sdk"
-
-  # Install devops / cloud provider
-  laptop_package_ensure "az"
-  # laptop_package_ensure "heroku"
-  laptop_package_ensure "gcloud"
-  laptop_package_ensure "k9s"
-  laptop_package_ensure "kubectl"
-  laptop_package_ensure "kubectx"
-  # laptop_package_ensure "scalingo"
 
   # laptop_package_ensure "idb-companion" # deprecated method
   # laptop_package_ensure "flipper" # deprecated method
