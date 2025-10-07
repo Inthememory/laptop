@@ -45,6 +45,7 @@ if [ -z "$LAPTOP_DEVCONTAINER" ];then
 
   laptop_package_ensure "cursor"
   laptop_package_ensure "orbstack"
+  laptop_package_ensure "container"
 
   # Install programs
 
