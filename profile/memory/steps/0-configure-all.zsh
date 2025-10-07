@@ -20,7 +20,7 @@ laptop_package_ensure "pack:cloud-utils"
 # Additional utils
 laptop_package_ensure "fga"
 
-if [ -z "$LAPTOP_DEVCONTAINER" ];then
+if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   # Configure git
   laptop_file_ensure "$XDG_CONFIG_HOME/git/config"
   laptop_package_ensure "config:git-recommended"
@@ -35,7 +35,7 @@ fi
 laptop_asdf_ensure_package_list "$(laptop_profile_dir)/.tool-versions"
 
 # Install programs (non devcontainers only)
-if [ -z "$LAPTOP_DEVCONTAINER" ];then
+if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   laptop_package_ensure "pack:social"
   laptop_package_ensure "pack:security"
   laptop_package_ensure "pack:productivity"
