@@ -83,8 +83,13 @@ fi;
 }
 
 # Profile a command and print the results
-zsh_profile_result() {
+zshrc_profile() {
   time ZPROF=1 zsh -i -c exit
+}
+
+# Edit .zshrc
+zshrc_edit() {
+  ${=EDITOR} ~/.zshrc
 }
 
 #⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
