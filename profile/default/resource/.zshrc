@@ -84,7 +84,7 @@ fi;
 
 # Profile a command and print the results
 zsh_profile_result() {
-  ZPROF=1 zsh "$@"
+  time ZPROF=1 zsh -i -c exit
 }
 
 #⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
@@ -144,6 +144,4 @@ unset -f .zshrc-command-alternative
 unset -f .zshrc-load-file
 
 # Print ZPROF results
-if [[ -n $ZSH_PROF ]]; then
-  zprof
-fi
+[[ -n "$ZPROF" ]] && zprof
