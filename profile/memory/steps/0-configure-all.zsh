@@ -31,8 +31,7 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   laptop_ssh_ensure_setting "Host *" "IdentityFile" "~/.ssh/id_ed25519"
 fi
 
-# Install globally tools using asdf to the version specified in profile/${profile_name}/.tool-versions
-laptop_asdf_ensure_package_list "$(laptop_profile_dir)/.tool-versions"
+laptop_package_ensure "profile:core"
 
 # Install programs (non devcontainers only)
 if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
@@ -54,17 +53,9 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
 
     # Install VSCode extensions
     laptop_package_ensure "pack:vscode-extension-recommended"
-
-    # Ruby extensions
-    laptop_vscode_ensure_extension "shopify.ruby-lsp"
-    laptop_vscode_ensure_extension "rubocop.vscode-rubocop"
-    laptop_vscode_ensure_extension "sorbet.sorbet-vscode-extension"
-
-    # Javascript / Typescript extensions
-    laptop_vscode_ensure_extension "dbaeumer.vscode-eslint"
+    laptop_package_ensure "profile:vscode-extensions"
 
     # Configure VSCode
-    laptop_npm_ensure_package "jsonc-cli"
     laptop_package_ensure "config:vscode-recommended"
     laptop_vscode_ensure_setting '["editor.fontFamily"]' "\"'Monaspace Neon', Menlo, Monaco, Courier New, monospace\""
     laptop_vscode_ensure_setting '["editor.fontLigatures"]' "\"'calt', 'liga', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09'\""
