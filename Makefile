@@ -6,26 +6,16 @@
 # 4. .modules/*/module.mk
 include .modules/core.mk
 
-SHELL_SRC_FILES ?= $(shell find . -iname 'bin/*' -o -iname '*.sh' -o -iname '*.bash' 2>/dev/null)
-SHELLCHECK := shellcheck
-SHFMT := shfmt
-
-.PHONY: setup
-setup: ## Setup development environment
-	brew install $(SHELLCHECK)
-	brew install $(SHFMT)
-
-.PHONY: lint
-lint: ## Lint all shell scripts
-	$(Q)$(SHELLCHECK) $(filter-out $(wildcard **/*.zsh), $(SHELL_SRC_FILES))
-
-.PHONY: format
-format: ## Format all shell scripts
-	$(Q)$(SHFMT) --write $(SHELL_SRC_FILES)
-
 .PHONY: test
 test: ## Run all tests
 	$(Q) ./test/suite.sh
 
 .PHONY: validate
 validate: lint test
+
+.PHONY: install
+install: ## Install laptop configuration
+	$(Q)mkdir -p $(INSTALL_PREFIX)
+	$(Q)cp -r bin lib profile $(INSTALL_PREFIX)
+# add LAPTOP_HOME to bin/laptop
+	$(Q)sed -i '' "s|^LAPTOP_HOME=.*|LAPTOP_HOME=\$${LAPTOP_HOME:-\"$(realpath $(INSTALL_PREFIX))\"}|" $(INSTALL_PREFIX)/bin/laptop
