@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-__LAPTOP_UPGRADE_TOOLS=("brew" "zinit" "asdf" "code" "cursor" "sdkmanager" "softwareupdate")
+__LAPTOP_UPGRADE_TOOLS=("laptop" "brew" "zinit" "asdf" "code" "cursor" "sdkmanager" "softwareupdate")
 
 laptop_command__upgrade_detect() {
   local filtered_commands
   filtered_commands=$(laptop_filter_command_exists "${__LAPTOP_UPGRADE_TOOLS[@]}")
   echo "The following tools were found and will be upgraded :"
   echo ""
-  echo "  ✓ laptop (itself)"
   # Iterate over the tools and check for their existence
   for tool in ${filtered_commands}; do
     echo "  ✓ $tool"
@@ -37,6 +36,9 @@ laptop_command__upgrade_run() {
     cursor)
       LAPTOP_VSCODE_EXECUTABLE="$tool" laptop_vscode_ensure_updated
       ;;
+    laptop)
+      laptop_self_ensure_updated
+      ;;
     sdkmanager)
       laptop_sdkmanager_ensure_updated
       ;;
@@ -58,7 +60,7 @@ laptop_command__upgrade_run() {
 laptop_command__upgrade() {
   laptop_handler_call "logo"
   laptop_command__upgrade_detect
-  if laptop_confirm "Continue? (Y/n)"; then
+  if laptop_confirm "Continue? (y/N)"; then
     laptop_command__upgrade_run
 
     laptop_info "🎉 Upgrade successful"

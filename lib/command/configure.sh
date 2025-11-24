@@ -32,9 +32,9 @@ laptop_command__configure() {
   if [ "${LAPTOP_BOOTSTRAP:-false}" = true ]; then
     laptop_info "  Install Mode: ${BRACKET}bootstrap${NORMAL} ${DIM}(only laptop and zshrc)${NORMAL}"
   else
-    laptop_info "  InstallMode: ${BRACKET}complete${NORMAL} ${DIM}(complete installation)${NORMAL}"
+    laptop_info "  Install Mode: ${BRACKET}complete${NORMAL} ${DIM}(complete installation)${NORMAL}"
   fi
-  if laptop_confirm "Continue? (Y/n)"; then
+  if laptop_confirm "Continue? (y/N)"; then
     laptop_command__configure_run
   else
     laptop_die "🛑 Upgrade aborted"
