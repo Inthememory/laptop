@@ -2,9 +2,6 @@
 
 # shellcheck disable=SC2155
 
-# Change current directory to home
-cd "$HOME" || exit 1
-
 if [ -z "${LAPTOP_HOME}" ]; then
   echo "LAPTOP_HOME variable is required"
   exit 1
@@ -16,7 +13,6 @@ export LAPTOP_HOME="$LAPTOP_HOME"
 export LAPTOP_LIB_DIR="$LAPTOP_HOME/lib"
 export LAPTOP_PROFILE_DIR="$LAPTOP_HOME/profile"
 export LAPTOP_PROFILE_DEFAULT="default"
-# export LAPTOP_PROFILE=${LAPTOP_PROFILE:-default}
 
 # Source scripts
 # shellcheck disable=SC1091
@@ -30,11 +26,20 @@ export LAPTOP_USER_DATA_DIR="$(laptop_xdg_dir data)/$LAPTOP_APP_NAME"
 export LAPTOP_USER_CACHE_DIR="$(laptop_xdg_dir cache)/$LAPTOP_APP_NAME"
 export LAPTOP_USER_STATE_DIR="$(laptop_xdg_dir state)/$LAPTOP_APP_NAME"
 
+export LAPTOP_USER_CONFIG_FILE="$LAPTOP_USER_CONFIG_DIR/config.ini"
+
+# Default environment variables
+export LAPTOP_PROFILE=${LAPTOP_PROFILE:-$(laptop_ini_get "$LAPTOP_USER_CONFIG_FILE" "profile")}
+
 # Use default by default
 export LAPTOP_SUDO=true
 if [ "$(whoami)" = "root" ]; then
   export LAPTOP_SUDO=false
 fi
+
+# Use ANSI colors default value
+export LAPTOP_COLOR_MODE=${LAPTOP_COLOR_MODE:-"auto"}
+export LAPTOP_COLOR=false
 
 if [ -z "$LAPTOP_DEVCONTAINER" ]; then
   if [[ "$(whoami)" = "vscode" ]]; then
@@ -57,36 +62,16 @@ fi
 
 ## Screen Dimensions
 # Find current screen size
-#if [ -z "${COLUMNS}" ]; then
-#COLUMNS=$(stty size)
-#COLUMNS=${COLUMNS##* }
-COLUMNS=100
-#fi
-
+if [ -z "${COLUMNS}" ]; then
+  COLUMNS=$(stty size 2>/dev/null | cut -d' ' -f2)
+fi
 # When using remote connections, such as a serial port, stty size returns 0
-if [ "$COLUMNS" = "0" ]; then
+if [ -z "$COLUMNS" ]; then
   COLUMNS=80
 fi
 LAPTOP_STEP_STATUS_COLUMN=$((COLUMNS - 8))
 # shellcheck disable=SC2034
 SET_COL="\\033[${LAPTOP_STEP_STATUS_COLUMN}G"
-# shellcheck disable=SC2034
-NORMAL="\\033[0;39m"
-# shellcheck disable=SC2034
-SUCCESS="\\033[1;32m"
-# shellcheck disable=SC2034
-BRACKET="\\033[1;34m"
-# shellcheck disable=SC2034
-COLOR_ERROR='\033[31m'
-# shellcheck disable=SC2034
-COLOR_WARNING='\033[1;33m'
-# shellcheck disable=SC2034
-COLOR_INFO="\\033[32m"
-# shellcheck disable=SC2034
-COLOR_SUCCESS='\033[32m'
-# shellcheck disable=SC2034
-DIM="\\033[2m"
-
 LAPTOP_SHELL="${LAPTOP_SHELL:-"zsh"}"
 
 quote() {
