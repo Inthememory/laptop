@@ -18,17 +18,16 @@ laptop_ini_ensure() {
   fi
 
   local current_value
-  current_value=$(laptop_ini_get "$file" "$section.${key}")
-
+  current_value=$(laptop_ini_get "$file" "$2")
   local resource_status="present"
   local current_resource_status
-  current_resource_status=$(echo "$current_value" | grep -q "$value" && echo "present" || echo "absent")
+  current_resource_status=$([ "$current_value" = "$value" ] && echo "present" || echo "absent")
 
   local resource_status="present"
   local current_resource_status
 
   local message
-  message="INI setting [\"$section\"][\"$key\"]='$value'"
+  message="INI setting $2=$value"
 
   laptop_step_start_status "$resource_status" "$current_resource_status" "$message"
 
