@@ -6,6 +6,11 @@
 # 4. .modules/*/module.mk
 include .modules/core.mk
 
+.PHONY: project-setup
+project-setup: ## Run all tests
+	$(Q)brew install augeas --quiet
+.setup:: project-setup
+
 .PHONY: test
 test: ## Run all tests
 	$(Q) ./test/suite.sh
