@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+laptop_require "laptop_step_start_status"
+laptop_require "laptop_step_exec"
+laptop_require "laptop_step_status"
+
 # Install brew tap `tap` if not present
 #
 # Usage:
@@ -26,10 +30,10 @@ laptop_brew_ensure_tap() {
 
   laptop_step_start_status "$resource_status" "$current_resource_status" "$message"
   if [ "$current_resource_status" = "$resource_status" ]; then
-    laptop_step_ok
+    laptop_step_status "ok"
   else
     if [ "$resource_status" = "present" ]; then
-      laptop_step_eval "brew tap $tap"
+      laptop_step_exec brew tap "$tap"
     else
       laptop_step_exec brew untap "$tap"
     fi
