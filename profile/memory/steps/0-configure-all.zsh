@@ -6,9 +6,6 @@ source "$LAPTOP_HOME/lib/env.sh"
 laptop_directory_ensure "$HOME/Code"
 laptop_directory_ensure "$HOME/Captures"
 
-# Setup github token for memory packages
-laptop_shell_profile_var "GITHUB_TOKEN_MEMORY_PACKAGES" '"$(gh auth token)"'
-
 if laptop_command_exists "defaults"; then
   laptop_package_ensure "config:macos-global-recommended"
   laptop_package_ensure "config:macos-screencapture-recommended"
@@ -32,6 +29,9 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   laptop_package_ensure "config:ssh-recommended"
   laptop_ssh_ensure_key "ed25519"
   laptop_ssh_ensure_setting "Host *" "IdentityFile" "~/.ssh/id_ed25519"
+
+  # Setup github token for memory packages
+  laptop_shell_profile_var "GITHUB_TOKEN_MEMORY_PACKAGES" '"$(gh auth token)"'
 fi
 
 laptop_package_ensure "profile:core"
