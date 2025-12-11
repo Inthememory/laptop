@@ -31,7 +31,7 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   laptop_ssh_ensure_setting "Host *" "IdentityFile" "~/.ssh/id_ed25519"
 
   # Setup github token for memory packages
-  laptop_shell_profile_var "GITHUB_TOKEN_MEMORY_PACKAGES" '"$(gh auth token)"'
+  laptop_shell_profile_var "GITHUB_TOKEN_MEMORY_PACKAGES" '"$(gh auth token 2>/dev/null)"'
 fi
 
 laptop_package_ensure "profile:core"
