@@ -25,7 +25,8 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   laptop_file_ensure "$XDG_CONFIG_HOME/git/config"
   laptop_package_ensure "config:git-recommended"
 
-  laptop_github_ensure_login
+  # scope is required to use the github token for memory packages
+  laptop_github_ensure_login --scopes "read:packages"
   laptop_package_ensure "config:ssh-recommended"
   laptop_ssh_ensure_key "ed25519"
   laptop_ssh_ensure_setting "Host *" "IdentityFile" "~/.ssh/id_ed25519"
