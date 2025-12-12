@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+laptop_require "laptop_step_start_status"
+laptop_require "laptop_step_eval"
+laptop_require "laptop_step_status"
+laptop_require "laptop_log"
+laptop_require "laptop_vscode_app_name"
+laptop_require "laptop_xdg_dir"
+laptop_require "laptop_npm_ensure_package"
+
 # Ensure VSCode setting
 #
 # Usage:
@@ -57,7 +65,7 @@ laptop_vscode_ensure_setting() {
 
   # Vérifier si la requête est vide
   if [ -z "$json_path" ]; then
-    laptop_error "Empty json_path"
+    laptop_log error "Empty json_path"
     return 1
   fi
 

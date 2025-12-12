@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+laptop_require "laptop_npm_ensure_package"
+laptop_require "laptop_log"
+
 # Install all npm packages from "npmfile" like file
 #
 # Usage:
@@ -19,6 +22,6 @@ laptop_npm_ensure_package_list() {
       laptop_npm_ensure_package "$target_package"
     done <"$npm_file"
   else
-    laptop_warn "$npm_file does not exist"
+    laptop_log warn "$npm_file does not exist"
   fi
 }

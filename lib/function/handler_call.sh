@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+laptop_require "laptop_log"
+
 # Call a handler function
 #
 # The handler function must be named like this:
@@ -15,7 +17,7 @@ laptop_handler_call() {
   if declare -f "$function_name" >/dev/null; then
     "$function_name" "$@"
   else
-    laptop_error "No handler function '$function_name'"
+    laptop_log error "No handler function '$function_name'"
     return 1
   fi
 }

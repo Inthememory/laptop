@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+laptop_require "laptop_vscode_ensure_extension"
+laptop_require "laptop_log"
+
 # Install all npm packages from "Codefile" like file
 #
 # Usage:
@@ -19,6 +22,6 @@ laptop_vscode_ensure_extension_list() {
       laptop_vscode_ensure_extension "$target_extension"
     done <"$vscode_file"
   else
-    laptop_warn "$vscode_file does not exist"
+    laptop_log warn "$vscode_file does not exist"
   fi
 }

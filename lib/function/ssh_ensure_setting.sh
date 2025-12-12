@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1087,SC1003
 
+laptop_require "laptop_step_start_status"
+laptop_require "laptop_step_exec"
+laptop_require "laptop_step_status"
+laptop_require "laptop_log"
+
 # Ensure SSH setting
 #
 # Usage:
@@ -49,7 +54,7 @@ save
 EOF
     else
       laptop_step_status "fail"
-      laptop_error "Not implemented"
+      laptop_log error "Not implemented"
     fi
   fi
 

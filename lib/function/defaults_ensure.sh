@@ -3,6 +3,7 @@
 laptop_require "laptop_step_start_status"
 laptop_require "laptop_step_exec"
 laptop_require "laptop_step_status"
+laptop_require "laptop_step_start_status"
 laptop_require "laptop_command_exists"
 
 # Ensure defaults are set
@@ -32,8 +33,16 @@ laptop_defaults_ensure() {
     esac
   done
 
+  local current_value
+  current_value=$(defaults read "$domain" "$key" "$value_type" 2>/dev/null)
+  case "$value_type" in
+    -bool)
+      current_value=$([ "$current_value" = "0" ] && echo "false" || echo "true")
+      ;;
+  esac
+
   local current_resource_status
-  current_resource_status=$(defaults read "$domain" "$key" &>/dev/null && echo "present" || echo "absent")
+  current_resource_status=$([ "$current_value" = "$value" ] && echo "present" || echo "absent")
   local message="Defaults ${domain}[${key}] $value_type $value"
 
   laptop_step_start_status "$resource_status" "$current_resource_status" "$message"

@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+laptop_require "laptop_step_start_status"
+laptop_require "laptop_step_exec"
+laptop_require "laptop_step_status"
+laptop_require "laptop_log"
+laptop_require "laptop_path_print"
+
 # Ensure SSH key exists
 #
 # Usage:
@@ -39,7 +45,7 @@ laptop_ssh_ensure_key() {
     if [ "$resource_status" = "present" ]; then
       if [ -z "$email" ]; then
         laptop_step_status "fail"
-        laptop_error "git config user.email is empty"
+        laptop_log error "git config user.email is empty"
       else
         laptop_step_exec ssh-keygen -t "$algorithm" -C "$email" -N '' -o -f "$ssh_key"
       fi

@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+laptop_require "laptop_step_start_status"
+laptop_require "laptop_step_exec"
+laptop_require "laptop_step_status"
+laptop_require "laptop_ini_get"
+laptop_require "laptop_log"
+
 # Set INI file values
 #
 # Usage:
@@ -45,7 +51,7 @@ save
 EOF
     else
       laptop_step_status "fail"
-      laptop_error "Not implemented"
+      laptop_log error "Not implemented"
     fi
   fi
 }
