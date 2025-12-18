@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+laptop_require "laptop_die"
+laptop_require "laptop_xdg_dir"
+
 laptop_command__config() {
   local action="$1"
   shift
@@ -20,10 +23,7 @@ laptop_command__config() {
     shift
     ;;
   "zsh")
-    if [ -z "$LAPTOP_CONFIG_ZSH_FILE" ]; then
-      laptop_die "LAPTOP_CONFIG_ZSH_FILE is not set"
-    fi
-    config_file="$LAPTOP_CONFIG_ZSH_FILE"
+    config_file="$(laptop_xdg_dir "config")/zsh/init"
     shift
     ;;
   "npm")
