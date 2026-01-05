@@ -80,15 +80,20 @@ Although there are some implementation tradeoffs, it should never limit develope
   ⚠️ You should never modify `.zshrc` because any changes will be lost when `laptop` script is run.
 
   Here is the order of profile loading :
-    - 🔒 `$XDG_DATA_HOME/zsh/global.{sh,zsh}` : default settings (always overwritten by `laptop`)
-    - ✍️ `$XDG_DATA_HOME/zsh/personal.{sh,zsh}` : custom personal settings
-    - ✍️ `.zshrc.local` : For local override (that should not be synched between devices)
 
-  Instead, configuration can be overridden in the following files () :
-    - `.zshrc.local` : For local override (that should not be synched between devices)
-    - `$XDG_DATA_HOME/zsh/*.sh` : For generic overrides (zsh plugins, etc). Files are included in alphabetic order, so as a convention each file starts with two digits.
+  1. 🔒 `~/.zprofile` (managed by laptop)
+      1. 🔒 `~/.profile` (managed by laptop)
+      2. ✍️ `$XDG_CONFIG_HOME/zsh/profile` : user settings
+      3. ✍️ `$XDG_DATA_HOME/zsh/profile` : local machine settings
 
-  Example `$XDG_DATA_HOME/zsh/init` :
+  2. 🔒 `~/.zshrc` (managed by laptop)
+      1. ✍️ `$XDG_CONFIG_HOME/zsh/init.d/*` : user settings as directory
+      2. ✍️ `$XDG_CONFIG_HOME/zsh/init` : user settings as file
+      3. ✍️ `$XDG_DATA_HOME/zsh/init.d/*` : local machine settings as directory
+      4. ✍️ `$XDG_DATA_HOME/zsh/init` : local machine settings as file
+      5. ✍️ `.zshrc.local` : local machine settings (alternate solution)
+
+  Example `$XDG_CONFIG_HOME/zsh/init` :
 
   ```shell
   # Load OhMyZSH ruby plugin
