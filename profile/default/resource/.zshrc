@@ -28,14 +28,50 @@
 # Example 1: Install and load OhMyZSH plugin named "ruby"
 # `zinit snippet OMZP::ruby`
 
+#⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 # Enable ZPROF for profiling when ZPROF environment variable is set
 [[ -n "$ZPROF" ]] && zmodload zsh/zprof
 
 #⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+##
+# Functions
+##
+
+# Source a file if it exists
+.zshrc-load-file() {
+  [ -f "$1" ] && source "$1"
+}
+
+# Source a file or a directory appending .d to the base file name if it exists
+.zshrc-load-file-wildcard() {
+  local base_file="$1"
+  local directory="$base_file.d"
+  if [ -d "$directory" ]; then
+    for file in "$directory"/*; do
+      source "$file"
+    done
+  fi
+  .zshrc-load-file "$base_file"
+}
+
+# Find the first command available
+.zshrc-command-alternative() {
+  for command_to_test in "$@"; do
+    if type "$command_to_test" &>/dev/null; then
+      printf "%s" "${command_to_test}"
+      break
+    fi
+  done
+}
+
+# Profile a command and print the results
+zshrc_profile() {
+  time ZPROF=1 zsh -i -c exit
+}
+
+#⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 # Load .zprofile when it seems not to have loaded (Linux)
-if [ -f "${HOME}/.zprofile" ]; then
-  source "${HOME}/.zprofile"
-fi
+.zshrc-load-file "$HOME/.zprofile"
 
 #⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 ##
@@ -63,54 +99,6 @@ else
   echo "zinit cannot be installed"
 fi;
 
-# Find the first command available
-.zshrc-command-alternative() {
-  for command_to_test in "$@"; do
-    if type "$command_to_test" &>/dev/null; then
-      printf "%s" "${command_to_test}"
-      break
-    fi
-  done
-}
-
-# Load plugins
-.zshrc-load-file() {
-  if [ -f "$1" ]; then
-    source "$1"
-  fi
-}
-
-.zshrc-load-file-wildcard() {
-  local base_file="$1"
-  local directory="$base_file.d"
-  if [ -d "$directory" ]; then
-    for file in "$directory"/*; do
-      source "$file"
-    done
-  fi
-  .zshrc-load-file "$base_file"
-}
-
-# Profile a command and print the results
-zshrc_profile() {
-  time ZPROF=1 zsh -i -c exit
-}
-
-#⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
-##
-# Custom scripts
-##
-
-# Load .zshrc.local
-[ -n "$XDG_CONFIG_HOME" ] && .zshrc-load-file-wildcard "$XDG_CONFIG_HOME/zsh/init"
-[ -n "$XDG_DATA_HOME" ] && .zshrc-load-file-wildcard "$XDG_DATA_HOME/zsh/init"
-if [ -f "$XDG_DATA_HOME/zsh/personal.sh" ]; then
-  echo "WARNING: $XDG_DATA_HOME/zsh/personal.sh detected"
-  echo "  Its use is deprecated, and was replaced by $XDG_CONFIG_HOME/zsh/init"
-  echo "  Run 'mv $XDG_DATA_HOME/zsh/personal.sh $XDG_CONFIG_HOME/zsh/init' to migrate"
-fi
-[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
-
 #⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 ##
 # History
@@ -123,6 +111,14 @@ fi
 if [ ! -d "$(dirname $HISTFILE)" ]; then
   mkdir -p "$(dirname $HISTFILE)"
   touch $HISTFILE
+fi
+
+##
+# Laptop installation as a zinit plugin
+##
+# Install also as a zsh plugin
+if [ -n "$LAPTOP_GIT_REMOTE" ]; then
+  zinit light "$LAPTOP_GIT_REMOTE"
 fi
 
 ##
@@ -145,10 +141,24 @@ if [ -z "$EDITOR" ]; then
   export EDITOR
 fi
 
-
 if [ -z "$VISUAL" ] && [ ! -z "$EDITOR" ]; then
   export VISUAL="$EDITOR"
 fi
+
+#⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+##
+# Custom scripts
+##
+
+# Load .zshrc.local
+[ -n "$XDG_CONFIG_HOME" ] && .zshrc-load-file-wildcard "$XDG_CONFIG_HOME/zsh/init"
+[ -n "$XDG_DATA_HOME" ] && .zshrc-load-file-wildcard "$XDG_DATA_HOME/zsh/init"
+if [ -f "$XDG_DATA_HOME/zsh/personal.sh" ]; then
+  echo "WARNING: $XDG_DATA_HOME/zsh/personal.sh detected"
+  echo "  Its use is deprecated, and was replaced by $XDG_CONFIG_HOME/zsh/init"
+  echo "  Run 'mv $XDG_DATA_HOME/zsh/personal.sh $XDG_CONFIG_HOME/zsh/init' to migrate"
+fi
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
 #⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 ##
@@ -156,6 +166,7 @@ fi
 ##
 unset -f .zshrc-command-alternative
 unset -f .zshrc-load-file
+unset -f .zshrc-load-file-wildcard
 
 # Print ZPROF results
 [[ -n "$ZPROF" ]] && zprof
