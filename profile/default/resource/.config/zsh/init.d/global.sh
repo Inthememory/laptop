@@ -23,12 +23,9 @@ if command -v zinit &>/dev/null; then
     zsh-users/zsh-autosuggestions
 
   # History Substring Search
-  # shellcheck disable=SC2016
-  zinit load 'zsh-users/zsh-history-substring-search'
-  zinit ice wait atload'_history_substring_search_config'
-  # Bind keys
-  bindkey '^[[A' history-substring-search-up
-  bindkey '^[[B' history-substring-search-down
+  zinit wait lucid for \
+    atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down' \
+    zsh-users/zsh-history-substring-search
 
   # Completions
   ##
@@ -43,26 +40,31 @@ if command -v zinit &>/dev/null; then
     as"completion" OMZ::plugins/docker/completions/_docker \
     as'completion' OMZ::plugins/docker-compose/_docker-compose
 
-  # Brew completions
+  # Brew completions (use cached HOMEBREW_PREFIX, compinit handled by zicompinit)
   if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-    autoload -Uz compinit && compinit
+    : "${HOMEBREW_PREFIX:=$(brew --prefix)}"
+    FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:$FPATH"
   fi
 
   # Zsh OMZ libraries
-  zinit snippet OMZL::clipboard.zsh
-  zinit snippet OMZL::compfix.zsh
-  zinit snippet OMZL::correction.zsh
-  zinit snippet OMZL::completion.zsh
-  zinit snippet OMZL::grep.zsh
+  # History loaded immediately (needed for shell behavior)
   zinit snippet OMZL::history.zsh
-  zinit snippet OMZL::spectrum.zsh
+
+  # Non-essential libraries deferred
+  zinit wait lucid for \
+    OMZL::clipboard.zsh \
+    OMZL::compfix.zsh \
+    OMZL::correction.zsh \
+    OMZL::completion.zsh \
+    OMZL::grep.zsh \
+    OMZL::spectrum.zsh
 
   # Zsh OMZ plugins
   zinit snippet OMZP::asdf
   # zinit snippet OMZP::fzf
 
-  zinit light hlissner/zsh-autopair
+  zinit wait lucid for \
+    hlissner/zsh-autopair
 
   # Fast highlight
   # @see https://github.com/zdharma-continuum/fast-syntax-highlighting?tab=readme-ov-file#zinit
