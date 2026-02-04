@@ -37,7 +37,7 @@
     XDG_CACHE_HOME_DEFAULT="$HOME/.cache"
     XDG_DATA_HOME_DEFAULT="$HOME/.local/share"
     XDG_STATE_HOME_DEFAULT="$HOME/.local/state"
-    XDG_RUNTIME_DIR_DEFAULT="/run/user/$(id -u)"
+    XDG_RUNTIME_DIR_DEFAULT="/run/user/${UID:-$(id -u)}"
   fi
   # export variables
   [[ -n "$XDG_BIN_HOME" ]] || export XDG_BIN_HOME=$XDG_BIN_HOME_DEFAULT
@@ -59,7 +59,7 @@
 
   # Source file
   [[ -r "${XDG_CONFIG_HOME}/user-dirs.dirs" ]] && {
-    . ${XDG_CONFIG_HOME}/user-dirs.dirs
+    . "${XDG_CONFIG_HOME}/user-dirs.dirs"
     # TODO export variables
   }
 }
@@ -138,7 +138,7 @@ if [ -z "$ANDROID_HOME" ]; then
   elif [ -d "/usr/local/opt/android-sdk" ]; then
     export ANDROID_HOME="/usr/local/opt/android-sdk"
   fi
-  if [ ! -z "$ANDROID_HOME" ]; then
+  if [ -n "$ANDROID_HOME" ]; then
     .profile-path-append "$ANDROID_HOME/platform-tools"
     .profile-path-append "$ANDROID_HOME/cmdline-tools/latest/bin"
   fi
@@ -157,10 +157,10 @@ fi
 .profile-path-prepend "$HOME/bin"
 .profile-path-prepend "$HOME/.bin"
 .profile-path-prepend "$HOME/.local/bin"
-if [ ! -z "$CARGO_HOME" ]; then
+if [ -n "$CARGO_HOME" ]; then
   .profile-path-append "$CARGO_HOME/bin"
 fi
-if [ ! -z "$GEM_HOME" ]; then
+if [ -n "$GEM_HOME" ]; then
   .profile-path-append "$GEM_HOME/bin"
 fi
 .profile-path-append "$HOME/Application"
