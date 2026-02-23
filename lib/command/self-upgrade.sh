@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
 laptop_require "laptop_log"
+laptop_require "laptop_confirm"
+laptop_require "laptop_die"
+laptop_require "laptop_handler_call"
 laptop_require "laptop_self_ensure_updated"
 
 laptop_command__self-upgrade() {
   laptop_handler_call "logo"
+  echo "Laptop is going to be upgraded to the latest version"
+  echo ""
   if laptop_confirm "Continue? (y/N)"; then
     laptop_command__self-upgrade_run
 
