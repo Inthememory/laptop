@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 memory_logo() {
+  local color_logo
+  color_logo="$(laptop_ansi bold)$(laptop_ansi blue)"
   # Check if the terminal supports colors
   if ! [ -t 1 ]; then
     return
@@ -19,7 +21,7 @@ memory_logo() {
 \e[49m     \e[49;38;5;234m▀▀▀▀▀\e[49;38;5;58m▀\e[38;5;178;48;5;58m▄\e[38;5;220;48;5;58m▄▄▄▄▄▄\e[49;38;5;58m▀\e[49;38;5;235m▀\e[49;38;5;234m▀\e[49m     \e[m
 \e[49m            \e[49;38;5;178m▀\e[49;38;5;220m▀▀\e[49;38;5;214m▀\e[49;38;5;220m▀\e[49m         \e[m
 ";
-  echo -e "$BRACKET\n"
+  echo -e "$color_logo\n"
   cat <<-"EOF"
 ┏┳┓┏━╸┏┳┓┏━┓┏━┓╻ ╻   ╻  ┏━┓┏━┓╺┳╸┏━┓┏━┓
 ┃┃┃┣╸ ┃┃┃┃ ┃┣┳┛┗┳┛   ┃  ┣━┫┣━┛ ┃ ┃ ┃┣━┛

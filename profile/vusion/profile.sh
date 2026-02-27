@@ -13,6 +13,6 @@ LAPTOP_INSTALL_BREW_PACKAGE="Inthememory/tap/laptop"
 # Uncomment to override the default handler
 
 laptop_handler__logo() {
-  laptop_require "memory_logo"
-  memory_logo
+  laptop_require "vusion_logo"
+  vusion_logo
 }
