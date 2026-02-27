@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# force profile name to vusion (for migration from memory profile)
+# shellcheck disable=SC2034
+LAPTOP_PROFILE="vusion"
+
 # Profile privacy settings
 LAPTOP_PROFILE_PRIVACY="${LAPTOP_PROFILE_PRIVACY:-strict}"
 # shellcheck disable=SC2034
