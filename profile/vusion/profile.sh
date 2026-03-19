@@ -9,7 +9,7 @@ LAPTOP_PROFILE_PRIVACY="${LAPTOP_PROFILE_PRIVACY:-strict}"
 # shellcheck disable=SC2034
 LAPTOP_INSTALL_BREW_PACKAGE="Inthememory/tap/laptop"
 # Auto update brew packages
-LAPTOP_BREW_AUTOUPDATE=${LAPTOP_BREW_AUTOUPDATE:-"true"}
+LAPTOP_BREW_AUTOUPDATE="true"
 
 # Handlers
 # Uncomment to override the default handler
