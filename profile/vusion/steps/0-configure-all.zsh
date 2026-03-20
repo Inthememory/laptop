@@ -4,6 +4,10 @@
 # Ensure Code
 laptop_directory_ensure "$HOME/Code"
 laptop_directory_ensure "$HOME/Captures"
+# Ensure copy Wallpaper to ~/Library/User Pictures/Vusion/
+if [ -d "/Library/User Pictures/Vusion/" ]; then
+  laptop_file_ensure_template "$(laptop_profile_dir)/resource/Wallpaper_Vusion.png" "/Library/User Pictures/Vusion/Wallpaper_VusionGroup.png" --sudo --force
+fi
 
 if laptop_command_exists "defaults"; then
   laptop_package_ensure "config:macos-global-recommended"
@@ -40,12 +44,6 @@ laptop_package_ensure "profile:core"
 
 # Install programs (non devcontainers only)
 if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
-
-  # Ensure copy Wallpaper to ~/Library/User Pictures/Vusion/
-  if [ -d "/Library/User Pictures/Vusion/" ]; then
-    laptop_file_ensure_template "$(laptop_profile_dir)/resource/Wallpaper_Vusion.png" "/Library/User Pictures/Vusion/Wallpaper_VusionGroup.png" --force
-  fi
-
   laptop_package_ensure "pack:social"
   laptop_package_ensure "pack:security"
   laptop_package_ensure "pack:productivity"
