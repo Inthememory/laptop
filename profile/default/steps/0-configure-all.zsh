@@ -8,6 +8,7 @@ if laptop_command_exists "defaults"; then
   laptop_package_ensure "config:macos-global-recommended"
   laptop_package_ensure "config:macos-screencapture-recommended"
   laptop_package_ensure "config:macos-update-recommended"
+  laptop_package_ensure "config:macos-apps-recommended"
 fi
 
 # Install standard utils
@@ -57,6 +58,9 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   # Install VSCode extensions
   laptop_package_ensure "pack:vscode-extension-recommended"
   laptop_package_ensure "profile:vscode-extensions"
+
+  # Configure npm
+  laptop_package_ensure "config:npm-recommended"
 
   # Configure VSCode
   laptop_package_ensure "config:vscode-recommended"
