@@ -36,6 +36,7 @@ cd "$HOME" || exit 1
 
 ###   cleanup: empty cache and prune unused resources
 ###   config edit <config_type> : edit the configuration file (default: self)
+###   config path <config_type> : print the configuration file path (default: self)
 ###   config view <config_type> : view the configuration file (default: self)
 ###   self-upgrade: upgrade only the laptop CLI (Homebrew installs)
 ###   setup: install and setup every tool for the current profile for this device
@@ -57,6 +58,7 @@ laptop_command__help() {
 ###
 ### Configuration type:
 ###   self: laptop configuration file
+###   asdf: asdf versions file (.tool-versions)
 ###   git: git configuration file
 ###   npm: npm user configuration file (.npmrc)
 ###   starship: starship configuration file

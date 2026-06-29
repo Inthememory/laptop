@@ -15,6 +15,9 @@ laptop_command__config() {
   "self")
     config_file="$LAPTOP_USER_CONFIG_FILE"
     ;;
+  "asdf")
+    config_file="$HOME/.tool-versions"
+    ;;
   "git")
     config_file="$(laptop_xdg_dir "config")/git/config"
     ;;
@@ -41,6 +44,9 @@ laptop_command__config() {
     ;;
   "edit")
     ${EDITOR} "$config_file"
+    ;;
+  "path")
+    printf '%s\n' "$config_file"
     ;;
   *)
     laptop_die "Unknown action: $action"
