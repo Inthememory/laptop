@@ -17,4 +17,5 @@ LAPTOP_INSTALL_BREW_PACKAGE="Inthememory/tap/laptop"
 laptop_handler__logo() {
   laptop_require "vusion_logo"
   vusion_logo
+  vusion_laptop_baseline
 }
