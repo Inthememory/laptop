@@ -24,15 +24,15 @@ project-test:
 	$(Q) ./test/suite.sh
 .test:: project-test
 
-.PHONY: install
-install: ## Install laptop configuration
+.PHONY: project-install
+project-install:
 # Install folders
 	$(Q)mkdir -p $(INSTALL_PREFIX)
 	$(Q)cp -r bin lib profile share $(INSTALL_PREFIX)
 # add LAPTOP_HOME to bin/laptop
 	$(Q)$(call set_var,LAPTOP_HOME,$${LAPTOP_HOME:-"$(realpath $(INSTALL_PREFIX))"},$(INSTALL_PREFIX)/bin/laptop)
 	$(Q)$(call set_var,LAPTOP_INSTALL_BREW_PACKAGE,$${LAPTOP_INSTALL_BREW_PACKAGE:-$(INSTALL_BREW_PACKAGE)},$(INSTALL_PREFIX)/bin/laptop)
-
+.install:: project-install
 
 .PHONY: pull-upstream
 pull-upstream: ## Pull upstream changes from GitHub
