@@ -19,7 +19,7 @@ Its core values are :
 Available profiles :
 
 - [default](./profile/default/README.md)
-- [memory](./profile/memory/README.md)
+- [vusion](./profile/vusion/README.md)
 
 1. Open a terminal ( [How to](https://www.wikihow.com/Open-a-Terminal-Window-in-Mac) )
 
