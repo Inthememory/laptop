@@ -13,18 +13,16 @@ define set_var
 endef
 
 .PHONY: project-setup
-project-setup: ## Run all tests
+project-setup:
 	$(Q)brew install augeas --quiet
 	$(Q)brew install shfmt --quiet
 	$(Q)brew install shellcheck --quiet
 .setup:: project-setup
 
-.PHONY: test
-test: ## Run all tests
+.PHONY: project-test
+project-test:
 	$(Q) ./test/suite.sh
-
-.PHONY: validate
-validate: lint test
+.test:: project-test
 
 .PHONY: install
 install: ## Install laptop configuration
@@ -34,3 +32,9 @@ install: ## Install laptop configuration
 # add LAPTOP_HOME to bin/laptop
 	$(Q)$(call set_var,LAPTOP_HOME,$${LAPTOP_HOME:-"$(realpath $(INSTALL_PREFIX))"},$(INSTALL_PREFIX)/bin/laptop)
 	$(Q)$(call set_var,LAPTOP_INSTALL_BREW_PACKAGE,$${LAPTOP_INSTALL_BREW_PACKAGE:-$(INSTALL_BREW_PACKAGE)},$(INSTALL_PREFIX)/bin/laptop)
+
+
+.PHONY: pull-upstream
+pull-upstream: ## Pull upstream changes from GitHub
+	$(Q)gh repo sync $(CI_PROJECT_PATH) -b main
+
