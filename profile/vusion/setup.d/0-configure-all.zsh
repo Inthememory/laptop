@@ -36,10 +36,6 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   laptop_package_ensure "config:ssh-recommended"
   laptop_ssh_ensure_key "ed25519"
   laptop_ssh_ensure_setting "Host *" "IdentityFile" "~/.ssh/id_ed25519"
-
-  # Setup github token for memory packages
-  laptop_shell_ensure_var "$HOME/.profile" "GITHUB_TOKEN" '"$(GITHUB_TOKEN= gh auth token 2>/dev/null)"' --export
-  laptop_shell_ensure_var "$HOME/.profile" "GITHUB_TOKEN_MEMORY_PACKAGES" '"${GITHUB_TOKEN}"' --export
 fi
 
 # Install programs (non devcontainers only)
