@@ -1,3 +1,3 @@
 #!/usr/bin/env zsh
 
-laptop_azure_ensure_login
+laptop_az_ensure_login
