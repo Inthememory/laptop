@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+# Ensure copy Wallpaper to ~/Library/User Pictures/Vusion/
+if [ -d "/Library/User Pictures/Vusion/" ]; then
+  laptop_file_ensure_template "$(laptop_profile_dir)/resource/Wallpaper_Vusion.png" "/Library/User Pictures/Vusion/Wallpaper_VusionGroup.png" --sudo --force
+fi
+
 # Install programs (non devcontainers only)
 if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   laptop_package_ensure "pack:social"
