@@ -5,7 +5,7 @@ LAPTOP_PROFILE_PRIVACY="${LAPTOP_PROFILE_PRIVACY:-strict}"
 # shellcheck disable=SC2034
 LAPTOP_INSTALL_BREW_PACKAGE="w5s/tap/laptop"
 # shellcheck disable=SC2034
-LAPTOP_BREW_AUTOUPDATE="true"
+LAPTOP_BREW_AUTOUPDATE="false"
 
 # Handlers
 # Uncomment to override the default handler
@@ -23,5 +23,5 @@ LAPTOP_BREW_AUTOUPDATE="true"
 # }
 
 # laptop_handler__login() {
-#   LAPTOP_SOURCE_ALL=true laptop_shell_exec_dir_d "$(laptop_profile_dir)/login.d"
+#   LAPTOP_SOURCE_ALL=true laptop_shell_exec_dir_d zsh "$(laptop_profile_dir)/login.d"
 # }
