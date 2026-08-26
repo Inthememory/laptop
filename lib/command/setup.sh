@@ -7,6 +7,7 @@ laptop_require "laptop_confirm"
 laptop_require "laptop_die"
 laptop_require "laptop_setup_steps"
 laptop_require "laptop_self_ensure_profile_updated"
+laptop_require "laptop_self_command_touch"
 
 laptop_command__setup_run() {
   # Bootstrap
@@ -18,27 +19,22 @@ laptop_command__setup_run() {
     laptop_self_ensure_profile_updated
     laptop_setup_steps
   fi
+
+  laptop_self_command_touch "setup"
 }
 
 laptop_command__setup() {
   laptop_handler_call "logo"
   laptop_self_check_version
 
-  if [ -z "$LAPTOP_GIT_REMOTE" ]; then
-    laptop_log warn "LAPTOP_GIT_REMOTE is not set and is required for self updating"
-    laptop_log info "LAPTOP_GIT_REMOTE can have the following value :"
-    laptop_log info "  - A repository identifier (ex: jpolo/laptop)"
-    laptop_log info "  - A full repository url (ex: https://github.com/jpolo/laptop.git)"
-    laptop_log info "  - (empty value) to skip"
-    printf "LAPTOP_GIT_REMOTE? : "
-    read -e -r LAPTOP_GIT_REMOTE
-  fi
-
   local color_config
   color_config="$(laptop_ansi bold)$(laptop_ansi blue)"
 
   laptop_log info "  Profile: ${color_config}${LAPTOP_PROFILE}${NORMAL}"
   laptop_log info "  Dev Container: ${color_config}${LAPTOP_DEVCONTAINER}${NORMAL}"
+  if [ -n "$LAPTOP_GIT_REMOTE" ]; then
+    laptop_log info "  Git Remote: ${color_config}${LAPTOP_GIT_REMOTE}${NORMAL}"
+  fi
 
   # Ask confirmation
   if [ "${LAPTOP_BOOTSTRAP:-false}" = true ]; then
@@ -49,6 +45,6 @@ laptop_command__setup() {
   if laptop_confirm "Continue? (y/N)"; then
     laptop_command__setup_run
   else
-    laptop_die "🛑 Upgrade aborted"
+    laptop_die "🛑 Setup aborted"
   fi
 }

@@ -3,7 +3,7 @@
 # shellcheck disable=SC2155
 
 laptop_require "laptop_xdg_dir"
-laptop_require "laptop_ini_get"
+laptop_require "laptop_self_config_get"
 
 if [ -z "${LAPTOP_HOME}" ]; then
   echo "LAPTOP_HOME variable is required"
@@ -71,6 +71,11 @@ export LAPTOP_COLOR=${LAPTOP_COLOR:-false}
 # Source all functions mode (set to false for performances)
 export LAPTOP_SOURCE_ALL=${LAPTOP_SOURCE_ALL:-false}
 
+# Initialize command completed default delays
+export LAPTOP_SETUP_DELAY=${LAPTOP_SETUP_DELAY:-"7"}
+export LAPTOP_UPGRADE_DELAY=${LAPTOP_UPGRADE_DELAY:-"7"}
+export LAPTOP_CLEANUP_DELAY=${LAPTOP_CLEANUP_DELAY:-"30"}
+
 # Detect screen size
 if [ -z "${COLUMNS}" ]; then
   COLUMNS=$(stty size 2>/dev/null | cut -d' ' -f2)
@@ -85,4 +90,4 @@ _LAPTOP_STEP_STATUS_COLUMN=$((COLUMNS - 8))
 _LAPTOP_SET_COL="\\033[${_LAPTOP_STEP_STATUS_COLUMN}G"
 
 # Default environment variables
-export LAPTOP_PROFILE=${LAPTOP_PROFILE:-$(laptop_ini_get "$LAPTOP_USER_CONFIG_FILE" "profile")}
+export LAPTOP_PROFILE=${LAPTOP_PROFILE:-$(laptop_self_config_get "profile")}
