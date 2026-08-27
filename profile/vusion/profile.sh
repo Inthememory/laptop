@@ -19,3 +19,8 @@ laptop_handler__logo() {
   vusion_logo
   vusion_laptop_baseline
 }
+
+laptop_handler__welcome-logo() {
+  laptop_require "vusion_logo_small"
+  vusion_logo_small
+}
