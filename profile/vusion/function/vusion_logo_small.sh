@@ -2,14 +2,15 @@
 
 vusion_logo_small() {
   # Check if the terminal supports colors
-  if ! [ -t 1 ]; then
-    return
-  fi
 
-  local bold="\e[1m"
-  local yellow="\e[38;5;221m"
-  local reset="\e[m"
-  local style="${bold}${yellow}"
+
+  local bold yellow reset style
+  bold=$(laptop_ansi bold)
+  if [ -t 1 ]; then
+    yellow="\e[38;5;221m"
+  fi
+  reset=$(laptop_ansi reset)
+  style="${bold}${yellow}"
 
   local tl="╭" tr="╮" bl="╰" br="╯" h="─" v="│" left="╲" right="╱"
 
@@ -19,7 +20,7 @@ vusion_logo_small() {
     *) tl="+" tr="+" bl="+" br="+" h="-" v="|" left="\\\\" right="/" ;;
   esac
 
-  printf "%b\n\n" "\
+  printf "%b\n" "\
   ${style}${tl}${h}${h}${h}${h}${tr}${reset}
   ${style}${v} ${left}${right} ${v} VUSION SHELL${reset}
   ${style}${bl}${h}${h}${h}${h}${br}${reset}"
