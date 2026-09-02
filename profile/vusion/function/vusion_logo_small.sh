@@ -19,8 +19,8 @@ vusion_logo_small() {
     *) tl="+" tr="+" bl="+" br="+" h="-" v="|" left="\\\\" right="/" ;;
   esac
 
-  printf "%b\n" "\
-${style}${tl}${h}${h}${h}${h}${tr}${reset}
-${style}${v} ${left}${right} ${v} VUSION SHELL${reset}
-${style}${bl}${h}${h}${h}${h}${br}${reset}"
+  printf "%b\n\n" "\
+  ${style}${tl}${h}${h}${h}${h}${tr}${reset}
+  ${style}${v} ${left}${right} ${v} VUSION SHELL${reset}
+  ${style}${bl}${h}${h}${h}${h}${br}${reset}"
 }
