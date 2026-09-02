@@ -9,6 +9,7 @@ laptop_require "laptop_self_config_get"
 laptop_require "laptop_self_command_last_completed_at"
 laptop_require "laptop_self_command_last_completed_delay"
 laptop_require "laptop_self_command_touch"
+laptop_require "laptop_uptime"
 
 __LAPTOP_WELCOME_COMMANDS=(setup upgrade cleanup)
 
@@ -50,10 +51,64 @@ laptop_command__welcome_status() {
 
 laptop_command__welcome() {
   laptop_handler_call "welcome-logo"
+  {
+    laptop_command__welcome_os;
+    laptop_command__welcome_kernel;
+    laptop_command__welcome_uptime;
+    laptop_command__welcome_col "" ""
+    laptop_command__welcome_gituser;
+  } | column -t -s $'\t'
+
 
   local index command
   for index in "${!__LAPTOP_WELCOME_COMMANDS[@]}"; do
     command="${__LAPTOP_WELCOME_COMMANDS[$index]}"
     laptop_command__welcome_status "$command"
   done
+}
+
+laptop_command__welcome_os() {
+  if [ "$(uname -s)" = "Darwin" ]; then
+    laptop_command__welcome_col "Operating system:" "$(sw_vers -productName) $(sw_vers -productVersion) (Darwin)"
+  else
+    laptop_command__welcome_col "Operating system:" "$(lsb_release -ds) ($(uname -o))"
+  fi
+}
+
+laptop_command__welcome_kernel() {
+  laptop_command__welcome_col "Kernel Information:" "$(uname -smr)"
+}
+
+laptop_command__welcome_uptime() {
+  laptop_command__welcome_col "Uptime:" "$(laptop_ansi "white")Host up for $(laptop_ansi "cyan")$(laptop_print_uptime)"
+}
+
+laptop_command__welcome_gituser() {
+  # Display the Git user if set, if not display nothing
+  local git_user git_email
+  git_user="$(git config --global user.name)"
+  git_email="$(git config --global user.email)"
+  if [ -n "$git_user" ] && [ -n "$git_email" ]; then
+    laptop_command__welcome_col "Git User:" "$git_user <$git_email>"
+  fi
+}
+
+laptop_command__welcome_col() {
+  echo -e "$(laptop_ansi "magenta")\\t${1}\\t$(laptop_ansi "cyan")${2}$(laptop_ansi "white")"
+}
+
+laptop_print_uptime() {
+  local up_seconds
+  up_seconds="$(laptop_uptime)"
+
+  local mins=$(( (up_seconds / 60) % 60 ))
+  local hours=$(( (up_seconds / 3600) % 24 ))
+  local days=$(( up_seconds / 86400 ))
+  local uptime
+  if [ "$days" -eq 0 ]; then
+    uptime="$(printf "%02d hours %02d minutes" "$hours" "$mins")"
+  else
+    uptime="$(printf "%d days %02d hours %02d minutes" "$days" "$hours" "$mins")"
+  fi
+  echo "$uptime"
 }
