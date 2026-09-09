@@ -1,8 +1,89 @@
 #!/usr/bin/env bash
 
 laptop_require "laptop_brew_package_installed"
+laptop_require "laptop_date_now"
+laptop_require "laptop_date_to_epoch"
+laptop_require "laptop_die"
+laptop_require "laptop_self_state_get"
+laptop_require "laptop_self_state_ensure"
+laptop_require "laptop_self_version"
 
+# Check whether laptop is up-to-date, with optional TTL-based caching.
+#
+# Usage:
+#   laptop_self_updated [--cache-max-age cache_max_age_seconds]
+#
+# When no argument is provided:
+#   - cache reads are disabled
+#   - a live check is always performed
+#   - the result is still written to the XDG app state dir
+#
+# When an argument is provided:
+#   - it is treated as cache max age in seconds
+#   - invalid values exit with an error
+#   - a cached "outdated" result remains sticky until the laptop version changes
+#
 laptop_self_updated() {
+  local cache_max_age_seconds=""
+  local current_version
+  local cached_version
+  local cached_at
+  local cached_outdated
+  local live_status=0
+  local now_epoch
+  local cached_epoch
+  local age_seconds
+
+  if [[ "$#" -gt 0 ]]; then
+    if [[ "$1" != "--cache-max-age" ]] || [[ "$#" -ne 2 ]]; then
+      laptop_die "Usage: laptop_self_updated [--cache-max-age cache_max_age_seconds]"
+    fi
+    cache_max_age_seconds="$2"
+  fi
+
+  if [[ -n "$cache_max_age_seconds" ]] && [[ ! "$cache_max_age_seconds" =~ ^[0-9]+$ ]]; then
+    laptop_die "Invalid cache max age for laptop_self_updated: '$cache_max_age_seconds'. Must be a non-negative integer."
+  fi
+
+  current_version="$(laptop_self_version)"
+
+  # Cache is disabled if no TTL argument is provided.
+  if [[ -n "$cache_max_age_seconds" ]]; then
+    cached_version="$(laptop_self_state_get "self_updated_check_version")"
+    cached_at="$(laptop_self_state_get "self_updated_check_at")"
+    cached_outdated="$(laptop_self_state_get "self_updated_outdated")"
+
+    if [[ -n "$cached_version" ]] && [[ "$cached_version" == "$current_version" ]] && [[ -n "$cached_at" ]]; then
+      if [[ "$cached_outdated" == "1" ]]; then
+        return 1
+      fi
+
+      if [[ "$cached_outdated" == "0" ]]; then
+        now_epoch="$(laptop_date_to_epoch "$(laptop_date_now)")"
+        cached_epoch="$(laptop_date_to_epoch "$cached_at")"
+
+        if [[ -n "$now_epoch" ]] && [[ -n "$cached_epoch" ]]; then
+          age_seconds=$((now_epoch - cached_epoch))
+          if (( age_seconds <= cache_max_age_seconds )); then
+            return 0
+          fi
+        fi
+      fi
+    fi
+  fi
+
+  if ! _laptop_self_updated_live_check; then
+    live_status=1
+  fi
+
+  laptop_self_state_ensure "self_updated_check_version" "$current_version"
+  laptop_self_state_ensure "self_updated_check_at" "$(laptop_date_now)"
+  laptop_self_state_ensure "self_updated_outdated" "$live_status"
+
+  return "$live_status"
+}
+
+_laptop_self_updated_live_check() {
   local current_branch
   local remote_sha
   local local_sha
@@ -31,5 +112,6 @@ laptop_self_updated() {
       return 1 # Outdated
     fi
   fi
+
   return 0 # Up-to-date
 }

@@ -97,7 +97,7 @@ laptop_command__welcome_gituser() {
 }
 
 laptop_command__welcome_status_outdated() {
-  if ! laptop_self_updated; then
+  if ! laptop_self_updated --cache-max-age 86400; then
     laptop_command__welcome_notification "🆕" "New version of $(laptop_ansi "bold")laptop$(laptop_ansi "reset") is available! $(laptop_ansi "dim")(run $(laptop_ansi "bold")laptop self-update$(laptop_ansi "reset")$(laptop_ansi "dim") to update)$(laptop_ansi "reset")"
   fi
 }
