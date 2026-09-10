@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-.laptop_file_var_set_exported() {
+_laptop_file_var_set_exported() {
   local script_file="$1"
   local var_name="$2"
   grep -qE "^[[:blank:]]*export[[:blank:]]+${var_name}=" "$script_file"

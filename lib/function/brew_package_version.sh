@@ -11,7 +11,7 @@ laptop_require "laptop_brew_package_installed"
 laptop_brew_package_version() {
   local prefix cellar_name cellar_dir
   prefix=$(laptop_brew_prefix) || return 1
-  cellar_name=$(.laptop_brew_cellar_name "$1")
+  cellar_name=$(_laptop_brew_cellar_name "$1")
   cellar_dir="$prefix/Cellar/$cellar_name"
   [[ -d "$cellar_dir" ]] || return 1
   # shellcheck disable=SC2012

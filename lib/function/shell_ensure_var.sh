@@ -43,7 +43,7 @@ laptop_shell_ensure_var() {
   current_value=$(laptop_file_var_get "$script_file" "$var_name")
 
   local current_exported=0
-  if .laptop_file_var_set_exported "$script_file" "$var_name"; then
+  if _laptop_file_var_set_exported "$script_file" "$var_name"; then
     current_exported=1
   fi
 

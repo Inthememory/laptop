@@ -61,7 +61,7 @@ laptop_command__help() {
   fi
 }
 
-.laptop_command_load() {
+_laptop_command_load() {
   local subcommand="$1"
   local command_function="laptop_command__${subcommand}"
   local command_file="$LAPTOP_LIB_DIR/command/${subcommand}.sh"
@@ -117,7 +117,7 @@ while [[ $# -gt 0 ]]; do
       fi
       ;;
     -v|--version)
-      .laptop_command_load "version"
+      _laptop_command_load "version"
       laptop_command__version
       exit 0
       ;;
@@ -148,7 +148,7 @@ case $LAPTOP_SUBCOMMAND in
     laptop_command__help "${LAPTOP_ARGS[0]}"
     ;;
   "version")
-    .laptop_command_load "version"
+    _laptop_command_load "version"
     laptop_command__version
     ;;
   *)
@@ -158,7 +158,7 @@ case $LAPTOP_SUBCOMMAND in
       exit 0
     fi
 
-    .laptop_command_load "$LAPTOP_SUBCOMMAND"
+    _laptop_command_load "$LAPTOP_SUBCOMMAND"
     command_function="laptop_command__${LAPTOP_SUBCOMMAND}"
     if ! laptop_function_exists "$command_function"; then
       laptop_die "$(cat <<EOF
