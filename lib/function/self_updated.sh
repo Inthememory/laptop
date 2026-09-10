@@ -4,8 +4,8 @@ laptop_require "laptop_brew_package_installed"
 laptop_require "laptop_date_now"
 laptop_require "laptop_date_to_epoch"
 laptop_require "laptop_die"
-laptop_require "laptop_self_state_get"
-laptop_require "laptop_self_state_ensure"
+laptop_require "laptop_file_var_get"
+laptop_require "laptop_file_var_set"
 laptop_require "laptop_self_version"
 
 # Check whether laptop is up-to-date, with optional TTL-based caching.
@@ -16,7 +16,7 @@ laptop_require "laptop_self_version"
 # When no argument is provided:
 #   - cache reads are disabled
 #   - a live check is always performed
-#   - the result is still written to the XDG app state dir
+#   - the result is still written to the XDG cache dir
 #
 # When an argument is provided:
 #   - it is treated as cache max age in seconds
@@ -49,9 +49,9 @@ laptop_self_updated() {
 
   # Cache is disabled if no TTL argument is provided.
   if [[ -n "$cache_max_age_seconds" ]]; then
-    cached_version="$(laptop_self_state_get "self_updated_check_version")"
-    cached_at="$(laptop_self_state_get "self_updated_check_at")"
-    cached_outdated="$(laptop_self_state_get "self_updated_outdated")"
+    cached_version="$(_laptop_self_updated_cache_get "version")"
+    cached_at="$(_laptop_self_updated_cache_get "checked_at")"
+    cached_outdated="$(_laptop_self_updated_cache_get "outdated")"
 
     if [[ -n "$cached_version" ]] && [[ "$cached_version" == "$current_version" ]] && [[ -n "$cached_at" ]]; then
       if [[ "$cached_outdated" == "1" ]]; then
@@ -76,11 +76,28 @@ laptop_self_updated() {
     live_status=1
   fi
 
-  laptop_self_state_ensure "self_updated_check_version" "$current_version"
-  laptop_self_state_ensure "self_updated_check_at" "$(laptop_date_now)"
-  laptop_self_state_ensure "self_updated_outdated" "$live_status"
+  _laptop_self_updated_cache_set "version" "$current_version"
+  _laptop_self_updated_cache_set "checked_at" "$(laptop_date_now)"
+  _laptop_self_updated_cache_set "outdated" "$live_status"
 
   return "$live_status"
+}
+
+# Cache file is XDG cache dir scoped so it can be wiped at any time without side effects.
+_laptop_self_updated_cache_file() {
+  echo "$LAPTOP_USER_CACHE_DIR/outdated-check.cache"
+}
+
+_laptop_self_updated_cache_get() {
+  local key="$1"
+  laptop_file_var_get "$(_laptop_self_updated_cache_file)" "$key"
+}
+
+_laptop_self_updated_cache_set() {
+  local key="$1"
+  local value="$2"
+  mkdir -p "$LAPTOP_USER_CACHE_DIR"
+  laptop_file_var_set "$(_laptop_self_updated_cache_file)" "$key" "$value"
 }
 
 _laptop_self_updated_live_check() {
