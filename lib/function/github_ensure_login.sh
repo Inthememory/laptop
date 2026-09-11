@@ -6,7 +6,7 @@ laptop_require "laptop_step_exec"
 laptop_require "laptop_step_eval"
 
 # Return success when every required scope is present in the current scopes list.
-.laptop_github_scopes_include_all() {
+_laptop_github_scopes_include_all() {
   local current_scopes="$1"
   local required_scopes="$2"
   local required_scope
@@ -62,7 +62,7 @@ laptop_github_ensure_login() {
 
   if [ "$logged_in" -eq 0 ]; then
     resource_current_status="absent"
-  elif .laptop_github_scopes_include_all "$current_scopes" "$scopes"; then
+  elif _laptop_github_scopes_include_all "$current_scopes" "$scopes"; then
     resource_current_status="present"
   else
     resource_current_status="absent"

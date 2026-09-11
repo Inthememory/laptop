@@ -9,6 +9,7 @@ laptop_require "laptop_self_config_get"
 laptop_require "laptop_self_command_last_completed_at"
 laptop_require "laptop_self_command_last_completed_delay"
 laptop_require "laptop_self_command_touch"
+laptop_require "laptop_self_updated"
 laptop_require "laptop_uptime"
 
 __LAPTOP_WELCOME_COMMANDS=(setup upgrade cleanup)
@@ -30,14 +31,14 @@ laptop_command__welcome_status() {
       return
     fi
 
-    laptop_log warn "$label never executed $config_hint"
+    laptop_command__welcome_notification warn "$label never executed $config_hint"
     return
   fi
 
   now="$(laptop_date_to_epoch "$(laptop_date_now)")"
   timestamp_seconds="$(laptop_date_to_epoch "$timestamp")"
   if [ -z "$timestamp_seconds" ]; then
-    laptop_log warn "$label last execution date is invalid"
+    laptop_command__welcome_notification warn "$label last execution date is invalid"
     return
   fi
 
@@ -45,12 +46,13 @@ laptop_command__welcome_status() {
   [ "$days" -lt 0 ] && days=0
 
   if [ "$days" -ge "$delay" ]; then
-    laptop_log warn "$label not executed since $days day(s) $config_hint"
+    laptop_command__welcome_notification warn "$label not executed since $days day(s) $config_hint"
   fi
 }
 
 laptop_command__welcome() {
   laptop_handler_call "welcome-logo"
+
   {
     laptop_command__welcome_os;
     laptop_command__welcome_kernel;
@@ -59,7 +61,8 @@ laptop_command__welcome() {
     laptop_command__welcome_gituser;
   } | column -t -s $'\t'
 
-
+  echo ""
+  laptop_command__welcome_status_outdated
   local index command
   for index in "${!__LAPTOP_WELCOME_COMMANDS[@]}"; do
     command="${__LAPTOP_WELCOME_COMMANDS[$index]}"
@@ -93,8 +96,32 @@ laptop_command__welcome_gituser() {
   fi
 }
 
+laptop_command__welcome_status_outdated() {
+  if ! laptop_self_updated --cache-max-age 86400; then
+    laptop_command__welcome_notification "🆕" "New version of $(laptop_ansi "bold")laptop$(laptop_ansi "reset") is available! $(laptop_ansi "dim")(run $(laptop_ansi "bold")laptop self-update$(laptop_ansi "reset")$(laptop_ansi "dim") to update)$(laptop_ansi "reset")"
+  fi
+}
+
 laptop_command__welcome_col() {
   echo -e "$(laptop_ansi "magenta")\\t${1}\\t$(laptop_ansi "cyan")${2}$(laptop_ansi "white")"
+}
+
+laptop_command__welcome_notification() {
+  local level="$1"
+  local message="$2"
+  local icon="🔹"
+  case "$level" in
+    "warn")
+      icon="🔸"
+      ;;
+    "error")
+      icon="🔺"
+      ;;
+    *)
+      icon="$level"
+      ;;
+  esac
+  echo -e "  $icon $message"
 }
 
 laptop_print_uptime() {

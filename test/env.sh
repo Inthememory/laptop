@@ -35,10 +35,10 @@ source "$LAPTOP_HOME/test/assert_snapshot.sh"
 
 # mock functions
 
-.laptop_user_state_reset() {
+_laptop_user_state_reset() {
   rm -rf "${LAPTOP_USER_STATE_DIR:?}"/*
 }
 
-.laptop_date_now_mock() {
+_laptop_date_now_mock() {
   export LAPTOP_DATE_NOW="$1"
 }
