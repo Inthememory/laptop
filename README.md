@@ -95,14 +95,18 @@ Although there are some implementation tradeoffs, it should never limit develope
       4. ✍️ `$XDG_DATA_HOME/zsh/init` : local machine settings as file
       5. ✍️ `.zshrc.local` : local machine settings (alternate solution)
 
-  Example `$XDG_CONFIG_HOME/zsh/init` :
+  Plugin modules are managed separately in `$ZIM_CONFIG_FILE` (by default, `$XDG_CONFIG_HOME/zim/zimrc`). Add modules there with zimfw's `zmodule` command. The default file is created if missing and is not overwritten on later setup runs.
+
+  Existing custom zinit declarations are not converted automatically. Move and manually convert those declarations to zimfw syntax in `zimrc`; the old zinit cache is left untouched.
+
+  Zimfw initializes modules in `zimrc` order through a generated startup script; zinit's `wait`-based deferred loading is not carried over.
+
+  Example `$ZIM_CONFIG_FILE` :
 
   ```shell
-  # Load OhMyZSH ruby plugin
-  zinit snippet OMZP::ruby
-  # Load OhMyZSH rails plugin
-  zinit snippet OMZP::rails
-
+  # Load Oh-My-Zsh ruby and rails plugins
+  zmodule ohmyzsh/ohmyzsh --root plugins/ruby
+  zmodule ohmyzsh/ohmyzsh --root plugins/rails
   ```
 
 </details>
@@ -139,6 +143,8 @@ Try to install all software from the current profile (that was configured at fir
 
 Detect many tools (`brew`, `asdf`, etc) and launch their respective update command.
 
+For zimfw, this updates installed modules and upgrades the zimfw manager itself. If zinit is detected instead, it runs `zinit update --all`.
+
 This will also update the laptop plugin and executable itself.
 
 Launch this command regularly to be up to date and avoid keeping old software with potential security vulnerabilities.
@@ -160,13 +166,17 @@ Detect many tools (`brew`, `asdf`, etc) and try to free disk space (in a "safe" 
 - Remove cache
 - Prune unused data
 
+For zimfw, this runs `zimfw clean` to remove compiled files and the completion dumpfile. It does not uninstall modules. If zinit is detected instead, it runs `zinit cclear` and `zinit delete --clean`.
+
 NPM, docker, mobile development can be quite greedy on disk space. Launch this command regularly to avoid to be out of free disk space.
 
 ### `laptop welcome`
 
-Display the laptop logo and the number of days since `setup`, `upgrade`, and `cleanup` were last completed. A warning is shown when a command has never completed or its interval has passed.
+Display the laptop logo and maintenance status for `setup`, `upgrade`, and `cleanup`.
 
-The warning intervals can be customized with `LAPTOP_SETUP_DELAY`, `LAPTOP_UPGRADE_DELAY`, and `LAPTOP_CLEANUP_DELAY`. When unset, the corresponding self configuration keys `setup_interval`, `upgrade_interval`, and `cleanup_interval` are used. Defaults are 7, 7, and 30 days.
+`setup` is warned only when the current laptop profile version has not been launched. The grace period starts the first time that version is seen. `upgrade` and `cleanup` warn when their last completion interval has passed. A warning is also shown when host uptime reaches the configured threshold, recommending a reboot.
+
+The warning intervals can be customized with `LAPTOP_SETUP_DELAY`, `LAPTOP_UPGRADE_DELAY`, `LAPTOP_CLEANUP_DELAY`, and `LAPTOP_UPTIME_DELAY`. When unset, the corresponding self configuration keys `setup_delay`, `upgrade_delay`, `cleanup_delay`, and `uptime_delay` are used. Defaults are 2, 7, 30, and 30 days.
 
 ## ⭐️ Contributing
 

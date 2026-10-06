@@ -72,9 +72,10 @@ export LAPTOP_COLOR=${LAPTOP_COLOR:-false}
 export LAPTOP_SOURCE_ALL=${LAPTOP_SOURCE_ALL:-false}
 
 # Initialize command completed default delays
-export LAPTOP_SETUP_DELAY=${LAPTOP_SETUP_DELAY:-"7"}
+export LAPTOP_SETUP_DELAY=${LAPTOP_SETUP_DELAY:-"2"}
 export LAPTOP_UPGRADE_DELAY=${LAPTOP_UPGRADE_DELAY:-"7"}
 export LAPTOP_CLEANUP_DELAY=${LAPTOP_CLEANUP_DELAY:-"30"}
+export LAPTOP_UPTIME_DELAY=${LAPTOP_UPTIME_DELAY:-"30"}
 
 # Detect screen size
 if [ -z "${COLUMNS}" ]; then
