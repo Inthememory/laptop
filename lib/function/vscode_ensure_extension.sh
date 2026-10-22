@@ -29,7 +29,7 @@ laptop_vscode_ensure_extension() {
     esac
   done
   local list_extensions
-  list_extensions=$(code --list-extensions)
+  list_extensions=$("$executable" --list-extensions)
 
   local resource_current_status
   resource_current_status=$(echo "$list_extensions" | grep -iq "$extension_name" && echo "present" || echo "absent")

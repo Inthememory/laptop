@@ -69,6 +69,13 @@ laptop_vscode_ensure_setting() {
     return 1
   fi
 
+  # Install jsonc-cli before its first use and refresh the current process PATH.
+  _LAPTOP_ENSURE_JSONC_CLI="${_LAPTOP_ENSURE_JSONC_CLI:-false}"
+  if [ "$_LAPTOP_ENSURE_JSONC_CLI" = "false" ]; then
+    _LAPTOP_ENSURE_JSONC_CLI="true"
+    laptop_npm_ensure_package "jsonc-cli"
+  fi
+
   local current_value
   current_value="$(cat "$vscode_settings_file" | jsonc read "$json_path" 2>/dev/null)"
 
@@ -80,13 +87,6 @@ laptop_vscode_ensure_setting() {
   fi
   local message
   message="$app_name setting $json_path=$json_value"
-
-  # Try to install once jsonc-cli
-  _LAPTOP_ENSURE_JSONC_CLI="${_LAPTOP_ENSURE_JSONC_CLI:-false}"
-  if [ "$_LAPTOP_ENSURE_JSONC_CLI" = "false" ]; then
-    _LAPTOP_ENSURE_JSONC_CLI="true"
-    laptop_npm_ensure_package "jsonc-cli"
-  fi
 
   laptop_step_start_status "$resource_status" "$current_resource_status" "$message"
 

@@ -23,17 +23,21 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   # laptop_package_ensure "idb-companion" # deprecated method
   # laptop_package_ensure "flipper" # deprecated method
 
-  # Install VSCode extensions
-  laptop_package_ensure "pack:vscode-extension-recommended"
-  laptop_package_ensure "profile:vscode-extensions"
+  if command -v code >/dev/null 2>&1; then
+    # Install VSCode extensions
+    laptop_package_ensure "pack:vscode-extension-recommended"
+    laptop_package_ensure "profile:vscode-extensions"
 
-  # Configure VSCode
-  laptop_package_ensure "config:vscode-recommended"
-  laptop_vscode_ensure_setting '["editor.fontFamily"]' "\"'Monaspace Neon', Menlo, Monaco, Courier New, monospace\""
-  laptop_vscode_ensure_setting '["editor.fontLigatures"]' "\"'calt', 'liga', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09'\""
+    # Configure VSCode
+    laptop_package_ensure "config:vscode-recommended"
+    laptop_vscode_ensure_setting '["editor.fontFamily"]' "\"'Monaspace Neon', Menlo, Monaco, Courier New, monospace\""
+    laptop_vscode_ensure_setting '["editor.fontLigatures"]' "\"'calt', 'liga', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09'\""
 
-  # Fix ruby lsp with asdf
-  laptop_vscode_ensure_setting '["rubyLsp.rubyVersionManager","identifier"]' '"asdf"'
+    # Fix ruby lsp with asdf
+    laptop_vscode_ensure_setting '["rubyLsp.rubyVersionManager","identifier"]' '"asdf"'
+  else
+    laptop_log warn "code is unavailable; skipping extensions and settings"
+  fi
 fi
 
 

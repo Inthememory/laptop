@@ -25,7 +25,9 @@ laptop_npm_ensure_package() {
     esac
   done
   local resource_current_status
-  resource_current_status=$(npm list --global --parseable "$package" &>/dev/null && echo "present" || echo "absent")
+  local installed_path
+  installed_path="$(npm list --global --parseable --depth=0 "$package" 2>/dev/null)"
+  resource_current_status=$([ -n "$installed_path" ] && echo "present" || echo "absent")
 
   laptop_step_start_status "$resource_status" "$resource_current_status" "NPM package '$package'"
 
@@ -37,5 +39,21 @@ laptop_npm_ensure_package() {
     else
       laptop_step_exec npm uninstall --quiet --global "$package"
     fi
+  fi
+
+  if command -v asdf >/dev/null 2>&1; then
+    asdf reshim nodejs >/dev/null 2>&1 || true
+  fi
+
+  local npm_prefix
+  local npm_bin
+  npm_prefix="$(npm prefix --global 2>/dev/null)"
+  npm_bin="${npm_prefix:+$npm_prefix/bin}"
+  if [ -n "$npm_bin" ] && [ -d "$npm_bin" ]; then
+    case ":$PATH:" in
+    *":$npm_bin:"*) ;;
+    *) export PATH="$npm_bin:$PATH" ;;
+    esac
+    hash -r 2>/dev/null || true
   fi
 }

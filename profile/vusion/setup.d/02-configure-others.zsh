@@ -23,6 +23,11 @@ if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
   for editor in cursor code; do
     LAPTOP_VSCODE_EXECUTABLE="$editor"
 
+    if ! command -v "$editor" >/dev/null 2>&1; then
+      laptop_log warn "$editor is unavailable; skipping extensions and settings"
+      continue
+    fi
+
     # Install VSCode extensions
     laptop_package_ensure "pack:vscode-extension-recommended"
     laptop_package_ensure "profile:vscode-extensions"
