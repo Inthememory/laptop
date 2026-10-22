@@ -2,6 +2,12 @@
 
 laptop_package_ensure "config:os-recommended"
 
+# Authenticate with GitHub as soon as its CLI is available.
+laptop_package_ensure "gh"
+if [ "$LAPTOP_DEVCONTAINER" = "false" ];then
+  laptop_github_ensure_login
+fi
+
 # Install standard utils
 laptop_package_ensure "pack:core"
 laptop_package_ensure "config:asdf-recommended"
