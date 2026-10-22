@@ -15,7 +15,9 @@ laptop_package_ensure__pack:vscode-extension-recommended() {
   laptop_vscode_ensure_extension "EditorConfig.EditorConfig"
   laptop_vscode_ensure_extension "GitHub.vscode-pull-request-github"
   laptop_vscode_ensure_extension "joshbolduc.commitlint"
-  laptop_vscode_ensure_extension "ms-vsliveshare.vsliveshare"
+  if [ "${LAPTOP_VSCODE_EXECUTABLE:-code}" != "cursor" ]; then
+    laptop_vscode_ensure_extension "ms-vsliveshare.vsliveshare"
+  fi
   laptop_vscode_ensure_extension "streetsidesoftware.code-spell-checker"
 
 }
