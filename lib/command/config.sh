@@ -18,6 +18,9 @@ laptop_command__config() {
   "asdf")
     config_file="$HOME/.tool-versions"
     ;;
+  "mise")
+    config_file="${MISE_CONFIG_DIR:-$(laptop_xdg_dir "config")/mise}/config.toml"
+    ;;
   "git")
     config_file="$(laptop_xdg_dir "config")/git/config"
     ;;
@@ -31,6 +34,12 @@ laptop_command__config() {
     ;;
   "npm")
     config_file="$(npm config get userconfig)"
+    ;;
+  "ssh")
+    config_file="$HOME/.ssh/config"
+    ;;
+  "zimfw")
+    config_file="${ZIM_CONFIG_FILE:-$(laptop_xdg_dir "config")/zim/zimrc}"
     ;;
   *)
     laptop_die "Unknown config type: $config_type"
