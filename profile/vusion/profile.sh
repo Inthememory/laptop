@@ -6,6 +6,8 @@ LAPTOP_PROFILE="vusion"
 
 # Profile privacy settings
 LAPTOP_PROFILE_PRIVACY="${LAPTOP_PROFILE_PRIVACY:-strict}"
+# Tool manager settings. Vusion stays on asdf; the default profile stays on mise.
+LAPTOP_TOOL_MANAGER="${LAPTOP_TOOL_MANAGER:-asdf}"
 # shellcheck disable=SC2034
 LAPTOP_INSTALL_BREW_PACKAGE="Inthememory/tap/laptop"
 # Auto update brew packages
